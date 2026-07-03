@@ -28,21 +28,21 @@ document.getElementById("open-group-modal").addEventListener("click", () => open
 
 setupModal(studyModal, studyForm, () => {
   const data = collectFormData(studyForm, SOCIAL_FIELDS.study);
-  studySessions.push({ id: crypto.randomUUID(), ...data, createdAt: Date.now() });
+  studySessions.push({ id: newId(), ...data, createdAt: Date.now() });
   saveStorage(STUDY_KEY, studySessions);
   render();
 });
 
 setupModal(resourceModal, resourceForm, () => {
   const data = collectFormData(resourceForm, SOCIAL_FIELDS.resource);
-  resources.push({ id: crypto.randomUUID(), ...data, done: false, createdAt: Date.now() });
+  resources.push({ id: newId(), ...data, done: false, createdAt: Date.now() });
   saveStorage(RESOURCE_KEY, resources);
   render();
 });
 
 setupModal(groupModal, groupForm, () => {
   const data = collectFormData(groupForm, SOCIAL_FIELDS.group);
-  groupTasks.push({ id: crypto.randomUUID(), ...data, done: false, createdAt: Date.now() });
+  groupTasks.push({ id: newId(), ...data, done: false, createdAt: Date.now() });
   saveStorage(GROUP_KEY, groupTasks);
   render();
 });

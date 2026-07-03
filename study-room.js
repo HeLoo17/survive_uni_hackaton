@@ -79,7 +79,7 @@ goalForm.addEventListener("submit", (e) => {
   const input = document.getElementById("goal-input");
   const text = input.value.trim();
   if (!text) return;
-  goals.push({ id: crypto.randomUUID(), text, done: false });
+  goals.push({ id: newId(), text, done: false });
   saveStorage(goalsKey, goals);
   input.value = "";
   renderGoals();

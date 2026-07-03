@@ -241,6 +241,13 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+function newId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
 function sortByDayTime(items) {
   const dayOrder = DAYS;
   return [...items].sort((a, b) => {

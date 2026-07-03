@@ -27,14 +27,14 @@ document.getElementById("open-assignment-modal").addEventListener("click", () =>
 
 setupModal(classModal, classForm, () => {
   const data = collectFormData(classForm, TRACKER_FIELDS.class);
-  classes.push({ id: crypto.randomUUID(), ...data, createdAt: Date.now() });
+  classes.push({ id: newId(), ...data, createdAt: Date.now() });
   saveStorage(CLASS_KEY, classes);
   render();
 });
 
 setupModal(assignmentModal, assignmentForm, () => {
   const data = collectFormData(assignmentForm, TRACKER_FIELDS.assignment);
-  assignments.push({ id: crypto.randomUUID(), ...data, done: false, createdAt: Date.now() });
+  assignments.push({ id: newId(), ...data, done: false, createdAt: Date.now() });
   saveStorage(ASSIGNMENT_KEY, assignments);
   render();
 });
