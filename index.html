@@ -17,7 +17,7 @@
       <div class="header-text">
         <p class="eyebrow">Mini Hackathon · cursor.com</p>
         <h1>My Uni</h1>
-        <p class="subtitle">Keep track of your classes and assignments for the week.</p>
+        <p class="subtitle">Your semester timetable — let friends know when you're heading to class.</p>
       </div>
       <div class="stats">
         <div class="stat">
@@ -28,24 +28,44 @@
           <span class="stat-value" id="stat-assignments">0</span>
           <span class="stat-label">Assignments</span>
         </div>
-        <div class="stat">
-          <span class="stat-value" id="stat-done">0</span>
-          <span class="stat-label">Done</span>
-        </div>
       </div>
     </header>
 
-    <main class="dual-panels">
-      <section class="panel board-panel board-classes">
+    <div class="profile-bar">
+      <label for="user-name">Your name</label>
+      <input type="text" id="user-name" placeholder="e.g. Alex" maxlength="40">
+      <span class="profile-hint">Friends on Study Squad can see when you're going to class.</span>
+    </div>
+
+    <main class="uni-layout">
+      <section class="panel board-panel board-classes classes-panel">
         <div class="board-header">
           <span class="board-icon">📚</span>
           <div>
-            <h2>Classes</h2>
-            <p class="panel-hint">Your timetable this week</p>
+            <h2>Semester classes</h2>
+            <p class="panel-hint">Check "Going" before class so your squad knows you're attending.</p>
           </div>
         </div>
-        <ul id="class-list" class="item-list" aria-live="polite"></ul>
-        <p id="class-empty" class="empty-state">No classes yet — tap + to add one.</p>
+
+        <div class="table-wrap">
+          <table class="class-table" id="class-table">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Course</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Going?</th>
+                <th>Who's going</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="class-table-body"></tbody>
+          </table>
+          <p id="class-empty" class="empty-state">No classes yet — tap + below to add one for the semester.</p>
+        </div>
+
         <button type="button" class="add-card" id="open-class-modal" aria-label="Add class">
           <span class="add-icon">+</span>
           <span class="add-label">Add class</span>
@@ -70,7 +90,6 @@
     </main>
   </div>
 
-  <!-- Class modal -->
   <div class="modal" id="class-modal" aria-hidden="true" role="dialog" aria-labelledby="class-modal-title">
     <div class="modal-backdrop"></div>
     <div class="modal-dialog">
@@ -88,7 +107,6 @@
     </div>
   </div>
 
-  <!-- Assignment modal -->
   <div class="modal" id="assignment-modal" aria-hidden="true" role="dialog" aria-labelledby="assignment-modal-title">
     <div class="modal-backdrop"></div>
     <div class="modal-dialog">

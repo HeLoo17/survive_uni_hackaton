@@ -44,6 +44,10 @@ const SOCIAL_FIELDS = {
   ],
 };
 
+const ATTENDANCE_KEY = "survive-uni-attendance";
+const CLASS_KEY = "survive-uni-classes";
+const STUDY_KEY = "survive-uni-study-sessions";
+
 function loadStorage(key) {
   try {
     const raw = localStorage.getItem(key);
@@ -53,8 +57,32 @@ function loadStorage(key) {
   }
 }
 
+function loadStorageObject(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
 function saveStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+function saveStorageObject(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function getClassAttendanceList() {
+  const classes = loadStorage(CLASS_KEY);
+  const attendance = loadStorageObject(ATTENDANCE_KEY);
+  return sortByDayTime(classes)
+    .map((cls) => ({
+      ...cls,
+      attendees: (attendance[cls.id] || []).filter((a) => a.going).map((a) => a.name),
+    }))
+    .filter((cls) => cls.attendees.length > 0);
 }
 
 function buildFieldHtml(field, prefix = "") {

@@ -35,13 +35,26 @@
       </div>
     </header>
 
-    <main class="triple-panels">
+    <main class="social-layout">
+      <section class="panel board-panel board-attendance attendance-panel">
+        <div class="board-header">
+          <span class="board-icon">📍</span>
+          <div>
+            <h2>Who's going to class</h2>
+            <p class="panel-hint">See who's marked themselves as attending (from My Uni)</p>
+          </div>
+        </div>
+        <ul id="attendance-list" class="attendance-list"></ul>
+        <p id="attendance-empty" class="empty-state">No one has marked going yet. Set your name on My Uni and check "Going".</p>
+      </section>
+
+      <div class="triple-panels">
       <section class="panel board-panel board-study">
         <div class="board-header">
           <span class="board-icon">☕</span>
           <div>
             <h2>Study sessions</h2>
-            <p class="panel-hint">Plan when & where to meet</p>
+            <p class="panel-hint">Click a session to enter the study room</p>
           </div>
         </div>
         <ul id="study-list" class="item-list" aria-live="polite"></ul>
@@ -83,6 +96,7 @@
           <span class="add-label">Add group task</span>
         </button>
       </section>
+      </div>
     </main>
   </div>
 

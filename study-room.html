@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survive Uni — Study Room</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-social page-room">
+  <div class="app room-app">
+    <nav class="nav">
+      <a href="index.html" class="nav-link">My Uni</a>
+      <a href="social.html" class="nav-link">Study Squad</a>
+    </nav>
+
+    <header class="room-header">
+      <a href="social.html" class="back-link">← Back to Study Squad</a>
+      <div class="room-title-block">
+        <p class="eyebrow">Study room</p>
+        <h1 id="room-title">Loading…</h1>
+        <p class="subtitle" id="room-meta"></p>
+      </div>
+    </header>
+
+    <main class="room-grid">
+      <section class="tool-card tool-pomodoro">
+        <div class="tool-header">
+          <span class="tool-icon">🍅</span>
+          <div>
+            <h2>Pomodoro timer</h2>
+            <p class="tool-hint">25 min focus · 5 min break</p>
+          </div>
+        </div>
+        <div class="timer-display" id="pomodoro-display">25:00</div>
+        <div class="timer-mode" id="pomodoro-mode">Focus session</div>
+        <div class="tool-actions">
+          <button type="button" class="btn btn-primary" id="pomodoro-start">Start</button>
+          <button type="button" class="btn btn-secondary" id="pomodoro-reset">Reset</button>
+        </div>
+      </section>
+
+      <section class="tool-card tool-stopwatch">
+        <div class="tool-header">
+          <span class="tool-icon">⏱️</span>
+          <div>
+            <h2>Stopwatch</h2>
+            <p class="tool-hint">Track how long you've been studying</p>
+          </div>
+        </div>
+        <div class="timer-display" id="stopwatch-display">00:00:00</div>
+        <div class="tool-actions">
+          <button type="button" class="btn btn-primary" id="stopwatch-start">Start</button>
+          <button type="button" class="btn btn-secondary" id="stopwatch-reset">Reset</button>
+        </div>
+      </section>
+
+      <section class="tool-card tool-countdown">
+        <div class="tool-header">
+          <span class="tool-icon">⏳</span>
+          <div>
+            <h2>Countdown</h2>
+            <p class="tool-hint">Set a custom study timer</p>
+          </div>
+        </div>
+        <div class="countdown-setup" id="countdown-setup">
+          <label for="countdown-minutes">Minutes</label>
+          <input type="number" id="countdown-minutes" min="1" max="180" value="30">
+        </div>
+        <div class="timer-display" id="countdown-display">30:00</div>
+        <div class="tool-actions">
+          <button type="button" class="btn btn-primary" id="countdown-start">Start</button>
+          <button type="button" class="btn btn-secondary" id="countdown-reset">Reset</button>
+        </div>
+      </section>
+
+      <section class="tool-card tool-notes">
+        <div class="tool-header">
+          <span class="tool-icon">📋</span>
+          <div>
+            <h2>Session notes</h2>
+            <p class="tool-hint">Jot down key points while you study</p>
+          </div>
+        </div>
+        <textarea id="session-notes" class="notes-area" placeholder="Key formulas, questions to ask, things to review…"></textarea>
+        <p class="save-hint">Notes save automatically.</p>
+      </section>
+
+      <section class="tool-card tool-checklist">
+        <div class="tool-header">
+          <span class="tool-icon">✅</span>
+          <div>
+            <h2>Study goals</h2>
+            <p class="tool-hint">What do you want to finish today?</p>
+          </div>
+        </div>
+        <form id="goal-form" class="goal-form">
+          <input type="text" id="goal-input" placeholder="Add a goal…" maxlength="120">
+          <button type="submit" class="btn btn-primary btn-sm">Add</button>
+        </form>
+        <ul id="goal-list" class="goal-list"></ul>
+      </section>
+
+      <section class="tool-card tool-info">
+        <div class="tool-header">
+          <span class="tool-icon">ℹ️</span>
+          <div>
+            <h2>Session details</h2>
+            <p class="tool-hint">Your planned study session</p>
+          </div>
+        </div>
+        <dl class="info-list" id="session-info"></dl>
+      </section>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="study-room.js"></script>
+</body>
+</html>

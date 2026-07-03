@@ -12,6 +12,8 @@ const groupList = document.getElementById("group-list");
 const studyEmpty = document.getElementById("study-empty");
 const resourceEmpty = document.getElementById("resource-empty");
 const groupEmpty = document.getElementById("group-empty");
+const attendanceList = document.getElementById("attendance-list");
+const attendanceEmpty = document.getElementById("attendance-empty");
 
 const studyModal = document.getElementById("study-modal");
 const resourceModal = document.getElementById("resource-modal");
@@ -30,7 +32,7 @@ document.getElementById("open-group-modal").addEventListener("click", () => open
 
 setupModal(studyModal, studyForm, () => {
   const data = collectFormData(studyForm, SOCIAL_FIELDS.study);
-  studySessions.push({ id: crypto.randomUUID(), ...data, done: false, createdAt: Date.now() });
+  studySessions.push({ id: crypto.randomUUID(), ...data, createdAt: Date.now() });
   saveStorage(STUDY_KEY, studySessions);
   render();
 });
@@ -82,6 +84,34 @@ function deleteItem(list, key, id) {
   render();
 }
 
+function renderStudyCard(item) {
+  const li = document.createElement("li");
+  li.className = "item item-clickable";
+  li.dataset.id = item.id;
+
+  li.innerHTML = `
+    <div class="item-body">
+      <h3 class="item-title">${escapeHtml(item.title)}</h3>
+      <p class="item-meta">${escapeHtml(studyMeta(item))}</p>
+      ${item.notes ? `<p class="item-notes">${escapeHtml(item.notes)}</p>` : ""}
+      <span class="enter-room">Enter study room →</span>
+    </div>
+    <button type="button" class="btn-icon delete-btn" title="Remove session" aria-label="Remove session">×</button>
+  `;
+
+  li.addEventListener("click", (e) => {
+    if (e.target.closest(".delete-btn")) return;
+    window.location.href = `study-room.html?id=${encodeURIComponent(item.id)}`;
+  });
+
+  li.querySelector(".delete-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    deleteItem(studySessions, STUDY_KEY, item.id);
+  });
+
+  return li;
+}
+
 function renderResourceCard(item) {
   const li = createItemCard(
     item,
@@ -105,6 +135,25 @@ function renderResourceCard(item) {
   return li;
 }
 
+function renderAttendance() {
+  const going = getClassAttendanceList();
+  attendanceList.innerHTML = "";
+  attendanceEmpty.style.display = going.length === 0 ? "block" : "none";
+
+  going.forEach((cls) => {
+    const li = document.createElement("li");
+    li.className = "attendance-item";
+    li.innerHTML = `
+      <div class="attendance-class">
+        <strong>${escapeHtml(cls.title)}</strong>
+        <span class="attendance-when">${escapeHtml(cls.day)} · ${escapeHtml(formatTime(cls.time))}${cls.location ? ` · ${escapeHtml(cls.location)}` : ""}</span>
+      </div>
+      <div class="attendance-names">${cls.attendees.map((n) => `<span class="attendee-badge">${escapeHtml(n)}</span>`).join("")}</div>
+    `;
+    attendanceList.appendChild(li);
+  });
+}
+
 function renderList(container, emptyEl, items, renderFn) {
   container.innerHTML = "";
   emptyEl.style.display = items.length === 0 ? "block" : "none";
@@ -118,17 +167,9 @@ function updateStats() {
 }
 
 function render() {
-  renderList(studyList, studyEmpty, sortByDate(studySessions, "date", "time"), (item) =>
-    createItemCard(
-      item,
-      studyMeta(item),
-      (id, done) => toggleItem(studySessions, STUDY_KEY, id, done),
-      (id) => deleteItem(studySessions, STUDY_KEY, id)
-    )
-  );
-
+  renderAttendance();
+  renderList(studyList, studyEmpty, sortByDate(studySessions, "date", "time"), renderStudyCard);
   renderList(resourceList, resourceEmpty, resources, renderResourceCard);
-
   renderList(groupList, groupEmpty, sortByDate(groupTasks), (item) =>
     createItemCard(
       item,
@@ -137,7 +178,6 @@ function render() {
       (id) => deleteItem(groupTasks, GROUP_KEY, id)
     )
   );
-
   updateStats();
 }
 

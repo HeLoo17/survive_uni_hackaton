@@ -1,30 +1,35 @@
 # Survive Uni
 
-A two-page web app for the Cursor mini hackathon — help students survive university life.
+A multi-page web app for the Cursor mini hackathon — help students survive university life.
 
 ## Pages
 
 | Page | File | Purpose |
 |------|------|---------|
-| **My Uni** | `index.html` | Track classes and assignments |
-| **Study Squad** | `social.html` | Plan study sessions, share resources, coordinate group tasks |
+| **My Uni** | `index.html` | Semester class table + assignments |
+| **Study Squad** | `social.html` | Study sessions, resources, group tasks, class attendance |
+| **Study Room** | `study-room.html` | Focus tools — click any study session to enter |
 
-Both pages are linked via the top navigation bar and share the same visual system with different themes (academic green vs social purple).
-
-## How it works
-
-Each panel shows a list of items and a **+** button at the bottom. Clicking **+** opens a popup modal where you fill in the details — no permanent form cluttering the page.
+## Features
 
 ### My Uni
-- **Classes** — name, course code, day, time, location
-- **Assignments** — title, course, due date & time
+- **Semester class table** — view all classes in a table (no done checkbox; remove with × when semester ends)
+- **Going? toggle** — mark yourself as attending so friends can see on Study Squad
+- **Your name** — set your name so others know who's going
+- **Assignments** — add, list, mark done via + popup
 
 ### Study Squad
-- **Study sessions** — subject, date, time, location, friends
-- **Shared resources** — name, subject, link, who shared it
-- **Group tasks** — task, project, assigned to, due date
+- **Who's going to class** — shows attendance marked on My Uni
+- **Study sessions** — click any session to open the **Study Room**
+- **Shared resources** & **Group tasks**
 
-All items can be marked done or deleted. Data persists in your browser via `localStorage`.
+### Study Room
+- Pomodoro timer (25/5)
+- Stopwatch
+- Custom countdown timer
+- Session notes (auto-saved)
+- Study goals checklist
+- Session details
 
 ## Run locally
 
@@ -34,13 +39,6 @@ python3 -m http.server 8080
 
 Then visit [http://localhost:8080](http://localhost:8080).
 
-## Hackathon requirements
+## Note on attendance
 
-| Requirement | Status |
-|-------------|--------|
-| Works in a web browser | Yes |
-| Add items | Yes — via + popup on each panel |
-| Display a list | Yes |
-| Mark items as done | Yes |
-| HTML/CSS/JS | Yes |
-| Collaboration features | Yes — Study Squad page |
+Attendance is stored in your browser (`localStorage`). For a hackathon demo, friends can set different names on the same device to simulate multiple people. A real deployment would sync this via a backend.
