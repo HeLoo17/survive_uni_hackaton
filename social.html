@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survive Uni — Study Squad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-social">
+  <div class="app">
+    <nav class="nav">
+      <a href="index.html" class="nav-link">My Uni</a>
+      <a href="social.html" class="nav-link active">Study Squad</a>
+    </nav>
+
+    <header class="header">
+      <div class="header-text">
+        <p class="eyebrow">Mini Hackathon · cursor.com</p>
+        <h1>Study Squad</h1>
+        <p class="subtitle">Plan study sessions, share resources, and coordinate with your group.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-value" id="stat-sessions">0</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-resources">0</span>
+          <span class="stat-label">Resources</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-tasks">0</span>
+          <span class="stat-label">Group tasks</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="triple-panels">
+      <section class="panel board-panel board-study">
+        <div class="board-header">
+          <span class="board-icon">☕</span>
+          <div>
+            <h2>Study sessions</h2>
+            <p class="panel-hint">Plan when & where to meet</p>
+          </div>
+        </div>
+        <ul id="study-list" class="item-list" aria-live="polite"></ul>
+        <p id="study-empty" class="empty-state">No sessions planned — tap + to schedule one.</p>
+        <button type="button" class="add-card" id="open-study-modal" aria-label="Plan study session">
+          <span class="add-icon">+</span>
+          <span class="add-label">Plan session</span>
+        </button>
+      </section>
+
+      <section class="panel board-panel board-resources">
+        <div class="board-header">
+          <span class="board-icon">🔗</span>
+          <div>
+            <h2>Shared resources</h2>
+            <p class="panel-hint">Useful links & notes from friends</p>
+          </div>
+        </div>
+        <ul id="resource-list" class="item-list" aria-live="polite"></ul>
+        <p id="resource-empty" class="empty-state">Nothing shared yet — tap + to add a resource.</p>
+        <button type="button" class="add-card" id="open-resource-modal" aria-label="Share resource">
+          <span class="add-icon">+</span>
+          <span class="add-label">Share resource</span>
+        </button>
+      </section>
+
+      <section class="panel board-panel board-group">
+        <div class="board-header">
+          <span class="board-icon">👥</span>
+          <div>
+            <h2>Group tasks</h2>
+            <p class="panel-hint">Who's doing what</p>
+          </div>
+        </div>
+        <ul id="group-list" class="item-list" aria-live="polite"></ul>
+        <p id="group-empty" class="empty-state">No group tasks yet — tap + to coordinate.</p>
+        <button type="button" class="add-card" id="open-group-modal" aria-label="Add group task">
+          <span class="add-icon">+</span>
+          <span class="add-label">Add group task</span>
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <!-- Study session modal -->
+  <div class="modal" id="study-modal" aria-hidden="true" role="dialog" aria-labelledby="study-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="study-modal-title">Plan a study session</h2>
+        <button type="button" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="study-form" class="modal-form">
+        <div id="study-form-fields" class="form-grid"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resource modal -->
+  <div class="modal" id="resource-modal" aria-hidden="true" role="dialog" aria-labelledby="resource-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="resource-modal-title">Share a resource</h2>
+        <button type="button" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="resource-form" class="modal-form">
+        <div id="resource-form-fields" class="form-grid"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Share resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Group task modal -->
+  <div class="modal" id="group-modal" aria-hidden="true" role="dialog" aria-labelledby="group-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="group-modal-title">Add a group task</h2>
+        <button type="button" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="group-form" class="modal-form">
+        <div id="group-form-fields" class="form-grid"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="social.js"></script>
+</body>
+</html>

@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Survive Uni — This Week</title>
+  <title>Survive Uni — My Week</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-uni">
   <div class="app">
+    <nav class="nav">
+      <a href="index.html" class="nav-link active">My Uni</a>
+      <a href="social.html" class="nav-link">Study Squad</a>
+    </nav>
+
     <header class="header">
       <div class="header-text">
         <p class="eyebrow">Mini Hackathon · cursor.com</p>
-        <h1>Survive Uni</h1>
-        <p class="subtitle">Track classes, assignments, and deadlines — your way.</p>
+        <h1>My Uni</h1>
+        <p class="subtitle">Keep track of your classes and assignments for the week.</p>
       </div>
-      <div class="stats" id="stats">
+      <div class="stats">
         <div class="stat">
-          <span class="stat-value" id="stat-total">0</span>
-          <span class="stat-label">Total</span>
+          <span class="stat-value" id="stat-classes">0</span>
+          <span class="stat-label">Classes</span>
         </div>
         <div class="stat">
-          <span class="stat-value" id="stat-pending">0</span>
-          <span class="stat-label">To do</span>
+          <span class="stat-value" id="stat-assignments">0</span>
+          <span class="stat-label">Assignments</span>
         </div>
         <div class="stat">
           <span class="stat-value" id="stat-done">0</span>
@@ -30,81 +35,78 @@
       </div>
     </header>
 
-    <main class="main">
-      <section class="panel add-panel">
-        <h2>Add something new</h2>
-        <p class="panel-hint">Pick a type, fill in what you know — you can always edit later.</p>
-
-        <form id="add-form" class="add-form">
-          <div class="type-picker" role="group" aria-label="Item type">
-            <label class="type-option">
-              <input type="radio" name="type" value="class" checked>
-              <span class="type-card type-class">
-                <span class="type-icon">📚</span>
-                <span class="type-name">Class</span>
-              </span>
-            </label>
-            <label class="type-option">
-              <input type="radio" name="type" value="assignment">
-              <span class="type-card type-assignment">
-                <span class="type-icon">📝</span>
-                <span class="type-name">Assignment</span>
-              </span>
-            </label>
-            <label class="type-option">
-              <input type="radio" name="type" value="deadline">
-              <span class="type-card type-deadline">
-                <span class="type-icon">⏰</span>
-                <span class="type-name">Deadline</span>
-              </span>
-            </label>
-          </div>
-
-          <div class="form-grid" id="form-fields">
-            <!-- Fields injected by JS based on selected type -->
-          </div>
-
-          <button type="submit" class="btn btn-primary">Add to my week</button>
-        </form>
-      </section>
-
-      <section class="panel list-panel">
-        <div class="list-header">
-          <h2>Your week</h2>
-          <div class="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="class">Classes</button>
-            <button class="filter-btn" data-filter="assignment">Assignments</button>
-            <button class="filter-btn" data-filter="deadline">Deadlines</button>
+    <main class="dual-panels">
+      <section class="panel board-panel board-classes">
+        <div class="board-header">
+          <span class="board-icon">📚</span>
+          <div>
+            <h2>Classes</h2>
+            <p class="panel-hint">Your timetable this week</p>
           </div>
         </div>
+        <ul id="class-list" class="item-list" aria-live="polite"></ul>
+        <p id="class-empty" class="empty-state">No classes yet — tap + to add one.</p>
+        <button type="button" class="add-card" id="open-class-modal" aria-label="Add class">
+          <span class="add-icon">+</span>
+          <span class="add-label">Add class</span>
+        </button>
+      </section>
 
-        <ul id="item-list" class="item-list" aria-live="polite"></ul>
-        <p id="empty-state" class="empty-state hidden">
-          Nothing here yet. Add a class, assignment, or deadline to get started.
-        </p>
+      <section class="panel board-panel board-assignments">
+        <div class="board-header">
+          <span class="board-icon">📝</span>
+          <div>
+            <h2>Assignments</h2>
+            <p class="panel-hint">Deadlines and coursework</p>
+          </div>
+        </div>
+        <ul id="assignment-list" class="item-list" aria-live="polite"></ul>
+        <p id="assignment-empty" class="empty-state">No assignments yet — tap + to add one.</p>
+        <button type="button" class="add-card" id="open-assignment-modal" aria-label="Add assignment">
+          <span class="add-icon">+</span>
+          <span class="add-label">Add assignment</span>
+        </button>
       </section>
     </main>
   </div>
 
-  <template id="item-template">
-    <li class="item" data-id="">
-      <label class="item-check">
-        <input type="checkbox" class="done-toggle">
-        <span class="checkmark"></span>
-      </label>
-      <div class="item-body">
-        <div class="item-top">
-          <span class="item-badge"></span>
-          <h3 class="item-title"></h3>
-        </div>
-        <p class="item-meta"></p>
-        <p class="item-notes hidden"></p>
+  <!-- Class modal -->
+  <div class="modal" id="class-modal" aria-hidden="true" role="dialog" aria-labelledby="class-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="class-modal-title">Add a class</h2>
+        <button type="button" class="modal-close" aria-label="Close">×</button>
       </div>
-      <button type="button" class="btn-icon delete-btn" title="Remove item" aria-label="Remove item">×</button>
-    </li>
-  </template>
+      <form id="class-form" class="modal-form">
+        <div id="class-form-fields" class="form-grid"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save class</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
+  <!-- Assignment modal -->
+  <div class="modal" id="assignment-modal" aria-hidden="true" role="dialog" aria-labelledby="assignment-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="assignment-modal-title">Add an assignment</h2>
+        <button type="button" class="modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="assignment-form" class="modal-form">
+        <div id="assignment-form-fields" class="form-grid"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
