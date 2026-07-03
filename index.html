@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survive Uni — This Week</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-text">
+        <p class="eyebrow">Mini Hackathon · cursor.com</p>
+        <h1>Survive Uni</h1>
+        <p class="subtitle">Track classes, assignments, and deadlines — your way.</p>
+      </div>
+      <div class="stats" id="stats">
+        <div class="stat">
+          <span class="stat-value" id="stat-total">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-pending">0</span>
+          <span class="stat-label">To do</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="stat-done">0</span>
+          <span class="stat-label">Done</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel add-panel">
+        <h2>Add something new</h2>
+        <p class="panel-hint">Pick a type, fill in what you know — you can always edit later.</p>
+
+        <form id="add-form" class="add-form">
+          <div class="type-picker" role="group" aria-label="Item type">
+            <label class="type-option">
+              <input type="radio" name="type" value="class" checked>
+              <span class="type-card type-class">
+                <span class="type-icon">📚</span>
+                <span class="type-name">Class</span>
+              </span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="type" value="assignment">
+              <span class="type-card type-assignment">
+                <span class="type-icon">📝</span>
+                <span class="type-name">Assignment</span>
+              </span>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="type" value="deadline">
+              <span class="type-card type-deadline">
+                <span class="type-icon">⏰</span>
+                <span class="type-name">Deadline</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="form-grid" id="form-fields">
+            <!-- Fields injected by JS based on selected type -->
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add to my week</button>
+        </form>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="list-header">
+          <h2>Your week</h2>
+          <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="class">Classes</button>
+            <button class="filter-btn" data-filter="assignment">Assignments</button>
+            <button class="filter-btn" data-filter="deadline">Deadlines</button>
+          </div>
+        </div>
+
+        <ul id="item-list" class="item-list" aria-live="polite"></ul>
+        <p id="empty-state" class="empty-state hidden">
+          Nothing here yet. Add a class, assignment, or deadline to get started.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <template id="item-template">
+    <li class="item" data-id="">
+      <label class="item-check">
+        <input type="checkbox" class="done-toggle">
+        <span class="checkmark"></span>
+      </label>
+      <div class="item-body">
+        <div class="item-top">
+          <span class="item-badge"></span>
+          <h3 class="item-title"></h3>
+        </div>
+        <p class="item-meta"></p>
+        <p class="item-notes hidden"></p>
+      </div>
+      <button type="button" class="btn-icon delete-btn" title="Remove item" aria-label="Remove item">×</button>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
