@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survive Uni — Campus Life Planner</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header__brand">
+        <span class="header__logo" aria-hidden="true">🎓</span>
+        <div>
+          <h1>Survive Uni</h1>
+          <p class="header__tagline">Track deadlines, plan study sessions, stay sane with friends.</p>
+        </div>
+      </div>
+      <div class="header__stats" id="weekStats" aria-live="polite"></div>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="App sections">
+      <button class="tabs__btn tabs__btn--active" role="tab" aria-selected="true" data-tab="week">This Week</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" data-tab="assignments">Assignments</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" data-tab="study">Study Sessions</button>
+      <button class="tabs__btn" role="tab" aria-selected="false" data-tab="group">Group Tasks</button>
+    </nav>
+
+    <main>
+      <!-- This Week -->
+      <section class="panel panel--active" id="panel-week" role="tabpanel" aria-labelledby="tab-week">
+        <div class="panel__header">
+          <h2>Your week ahead</h2>
+          <p class="panel__subtitle" id="weekRange"></p>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div class="empty-state" id="weekEmpty" hidden>
+          <p>Nothing on the calendar yet — add an assignment or study session to get started.</p>
+        </div>
+      </section>
+
+      <!-- Assignments -->
+      <section class="panel" id="panel-assignments" role="tabpanel" hidden>
+        <div class="panel__header">
+          <h2>Assignments &amp; deadlines</h2>
+          <button class="btn btn--primary" data-action="add" data-type="assignment">+ Add assignment</button>
+        </div>
+        <ul class="item-list" id="list-assignments"></ul>
+        <div class="empty-state" id="empty-assignments" hidden>
+          <p>No assignments yet. That won't last — add your first one!</p>
+        </div>
+      </section>
+
+      <!-- Study Sessions -->
+      <section class="panel" id="panel-study" role="tabpanel" hidden>
+        <div class="panel__header">
+          <h2>Study sessions</h2>
+          <button class="btn btn--primary" data-action="add" data-type="study">+ Plan session</button>
+        </div>
+        <ul class="item-list" id="list-study"></ul>
+        <div class="empty-state" id="empty-study" hidden>
+          <p>No study sessions planned. Grab a friend and block out some time.</p>
+        </div>
+      </section>
+
+      <!-- Group Tasks -->
+      <section class="panel" id="panel-group" role="tabpanel" hidden>
+        <div class="panel__header">
+          <h2>Group tasks &amp; resources</h2>
+          <button class="btn btn--primary" data-action="add" data-type="group">+ Add group task</button>
+        </div>
+        <ul class="item-list" id="list-group"></ul>
+        <div class="empty-state" id="empty-group" hidden>
+          <p>No group work tracked yet. Coordinate with your project squad here.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add / Edit modal -->
+  <dialog class="modal" id="itemModal">
+    <form class="modal__form" id="itemForm">
+      <header class="modal__header">
+        <h2 id="modalTitle">Add item</h2>
+        <button type="button" class="modal__close" data-action="close-modal" aria-label="Close">&times;</button>
+      </header>
+
+      <input type="hidden" id="itemId">
+      <input type="hidden" id="itemType">
+
+      <label class="field">
+        <span class="field__label">Title</span>
+        <input type="text" id="itemTitle" required placeholder="e.g. CS101 lab report">
+      </label>
+
+      <label class="field">
+        <span class="field__label">Subject / module</span>
+        <input type="text" id="itemSubject" placeholder="e.g. Computer Science, Film Club">
+      </label>
+
+      <label class="field">
+        <span class="field__label">Due date</span>
+        <input type="date" id="itemDueDate">
+      </label>
+
+      <div class="field-row" id="studyFields" hidden>
+        <label class="field">
+          <span class="field__label">Time</span>
+          <input type="time" id="itemTime">
+        </label>
+        <label class="field">
+          <span class="field__label">Location</span>
+          <input type="text" id="itemLocation" placeholder="Library room 3">
+        </label>
+      </div>
+
+      <label class="field" id="friendsField" hidden>
+        <span class="field__label">Friends (comma-separated)</span>
+        <input type="text" id="itemFriends" placeholder="Alex, Sam, Jordan">
+      </label>
+
+      <label class="field" id="assigneeField" hidden>
+        <span class="field__label">Who's on it?</span>
+        <input type="text" id="itemAssignee" placeholder="Your name or teammate">
+      </label>
+
+      <label class="field">
+        <span class="field__label">Notes / resource link</span>
+        <textarea id="itemNotes" rows="3" placeholder="Slides URL, textbook chapter, etc."></textarea>
+      </label>
+
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost" data-action="close-modal">Cancel</button>
+        <button type="submit" class="btn btn--primary">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
