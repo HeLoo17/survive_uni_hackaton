@@ -1,14 +1,8 @@
-const CLASS_KEY = "survive-uni-classes";
-const ASSIGNMENT_KEY = "survive-uni-assignments";
-const ATTENDANCE_KEY = "survive-uni-attendance";
-const USER_NAME_KEY = "survive-uni-user-name";
-
 let classes = loadStorage(CLASS_KEY);
 let assignments = loadStorage(ASSIGNMENT_KEY);
 let attendance = loadStorageObject(ATTENDANCE_KEY);
 
-const classTableBody = document.getElementById("class-table-body");
-const classTable = document.getElementById("class-table");
+const weekGrid = document.getElementById("week-grid");
 const classEmpty = document.getElementById("class-empty");
 const assignmentList = document.getElementById("assignment-list");
 const assignmentEmpty = document.getElementById("assignment-empty");
@@ -22,7 +16,7 @@ const assignmentForm = document.getElementById("assignment-form");
 userNameInput.value = localStorage.getItem(USER_NAME_KEY) || "";
 userNameInput.addEventListener("input", () => {
   localStorage.setItem(USER_NAME_KEY, userNameInput.value.trim());
-  renderClassTable();
+  renderWeekTimetable();
 });
 
 renderFormFields(document.getElementById("class-form-fields"), TRACKER_FIELDS.class);
@@ -67,7 +61,7 @@ function setGoing(classId, going) {
   }
 
   saveStorageObject(ATTENDANCE_KEY, attendance);
-  renderClassTable();
+  renderWeekTimetable();
 }
 
 function isUserGoing(classId) {
@@ -110,48 +104,60 @@ function deleteAssignment(id) {
   render();
 }
 
-function renderClassTable() {
-  const sorted = sortByDayTime(classes);
-  classTableBody.innerHTML = "";
+function createClassCard(item) {
+  const going = isUserGoing(item.id);
+  const names = goingNames(item.id);
 
-  const hasClasses = sorted.length > 0;
-  classTable.style.display = hasClasses ? "table" : "none";
+  const card = document.createElement("div");
+  card.className = "week-class-card";
+  card.innerHTML = `
+    <div class="week-class-top">
+      <strong class="week-class-title">${escapeHtml(item.title)}</strong>
+      <button type="button" class="btn-icon delete-btn" title="Remove class" aria-label="Remove class">×</button>
+    </div>
+    ${item.course ? `<span class="week-class-course">${escapeHtml(item.course)}</span>` : ""}
+    <span class="week-class-time">${escapeHtml(formatTime(item.time))}</span>
+    ${item.location ? `<span class="week-class-location">📍 ${escapeHtml(item.location)}</span>` : ""}
+    ${item.notes ? `<span class="week-class-notes">${escapeHtml(item.notes)}</span>` : ""}
+    <label class="going-toggle week-going" title="Let others know you're attending">
+      <input type="checkbox" class="going-check" ${going ? "checked" : ""}>
+      <span class="going-label">${going ? "Going ✓" : "Going?"}</span>
+    </label>
+    ${names ? `<span class="week-class-who">👥 ${escapeHtml(names)}</span>` : ""}
+  `;
+
+  card.querySelector(".going-check").addEventListener("change", (e) => {
+    setGoing(item.id, e.target.checked);
+  });
+
+  card.querySelector(".delete-btn").addEventListener("click", () => deleteClass(item.id));
+  return card;
+}
+
+function renderWeekTimetable() {
+  weekGrid.innerHTML = "";
+
+  const hasClasses = classes.length > 0;
   classEmpty.style.display = hasClasses ? "none" : "block";
 
-  sorted.forEach((item) => {
-    const tr = document.createElement("tr");
-    const going = isUserGoing(item.id);
-    const names = goingNames(item.id);
+  DAYS.forEach((day) => {
+    const dayClasses = sortByDayTime(classes.filter((c) => c.day === day));
 
-    tr.innerHTML = `
-      <td class="cell-title">${escapeHtml(item.title)}</td>
-      <td>${escapeHtml(item.course || "—")}</td>
-      <td>${escapeHtml(item.day)}</td>
-      <td>${escapeHtml(formatTime(item.time))}</td>
-      <td>${escapeHtml(item.location || "—")}</td>
-      <td class="cell-going">
-        <label class="going-toggle" title="Let others know you're attending">
-          <input type="checkbox" class="going-check" ${going ? "checked" : ""}>
-          <span class="going-label">${going ? "Going" : "Not going"}</span>
-        </label>
-      </td>
-      <td class="cell-who">${names ? escapeHtml(names) : '<span class="muted">—</span>'}</td>
-      <td class="cell-action">
-        <button type="button" class="btn-icon delete-btn" title="Remove class" aria-label="Remove class">×</button>
-      </td>
-    `;
+    const column = document.createElement("div");
+    column.className = "week-day";
+    column.innerHTML = `<h3 class="week-day-name">${day.slice(0, 3)}</h3>`;
 
-    if (item.notes) {
-      tr.title = item.notes;
+    const slots = document.createElement("div");
+    slots.className = "week-day-slots";
+
+    if (dayClasses.length === 0) {
+      slots.innerHTML = `<p class="week-day-empty">—</p>`;
+    } else {
+      dayClasses.forEach((item) => slots.appendChild(createClassCard(item)));
     }
 
-    tr.querySelector(".going-check").addEventListener("change", (e) => {
-      setGoing(item.id, e.target.checked);
-      tr.querySelector(".going-label").textContent = e.target.checked ? "Going" : "Not going";
-    });
-
-    tr.querySelector(".delete-btn").addEventListener("click", () => deleteClass(item.id));
-    classTableBody.appendChild(tr);
+    column.appendChild(slots);
+    weekGrid.appendChild(column);
   });
 }
 
@@ -178,7 +184,7 @@ function updateStats() {
 }
 
 function render() {
-  renderClassTable();
+  renderWeekTimetable();
   renderAssignments();
   updateStats();
 }

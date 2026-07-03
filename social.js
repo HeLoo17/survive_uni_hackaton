@@ -1,7 +1,3 @@
-const STUDY_KEY = "survive-uni-study-sessions";
-const RESOURCE_KEY = "survive-uni-resources";
-const GROUP_KEY = "survive-uni-group-tasks";
-
 let studySessions = loadStorage(STUDY_KEY);
 let resources = loadStorage(RESOURCE_KEY);
 let groupTasks = loadStorage(GROUP_KEY);

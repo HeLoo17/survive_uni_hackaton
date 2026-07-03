@@ -46,7 +46,11 @@ const SOCIAL_FIELDS = {
 
 const ATTENDANCE_KEY = "survive-uni-attendance";
 const CLASS_KEY = "survive-uni-classes";
+const ASSIGNMENT_KEY = "survive-uni-assignments";
+const USER_NAME_KEY = "survive-uni-user-name";
 const STUDY_KEY = "survive-uni-study-sessions";
+const RESOURCE_KEY = "survive-uni-resources";
+const GROUP_KEY = "survive-uni-group-tasks";
 
 function loadStorage(key) {
   try {

@@ -215,48 +215,114 @@ h1 {
   color: var(--text-muted);
 }
 
-/* Class table */
+/* Weekly timetable */
 .classes-panel {
   min-height: auto;
 }
 
-.table-wrap {
-  overflow-x: auto;
+.week-wrap {
   margin-bottom: 0.5rem;
 }
 
-.class-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.5rem;
+  overflow-x: auto;
 }
 
-.class-table th {
-  text-align: left;
-  padding: 0.65rem 0.75rem;
-  font-size: 0.7rem;
+@media (max-width: 900px) {
+  .week-grid {
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+  }
+}
+
+.week-day {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.week-day-name {
+  margin: 0;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: var(--class);
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--class) 10%, transparent);
+}
+
+.week-day-slots {
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.week-day-empty {
+  margin: auto;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  opacity: 0.5;
 }
 
-.class-table td {
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
+.week-class-card {
+  padding: 0.55rem 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  border-left: 3px solid var(--class);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.78rem;
 }
 
-.class-table tbody tr:hover {
-  background: color-mix(in srgb, var(--accent) 4%, transparent);
+.week-class-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.25rem;
 }
 
-.cell-title {
+.week-class-title {
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.week-class-course {
+  color: var(--class);
   font-weight: 600;
+  font-size: 0.72rem;
 }
 
-.cell-going {
-  white-space: nowrap;
+.week-class-time {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.week-class-location,
+.week-class-notes {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.week-going {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+}
+
+.week-class-who {
+  font-size: 0.7rem;
+  color: var(--accent);
 }
 
 .going-toggle {
@@ -281,19 +347,6 @@ h1 {
 .going-toggle input:checked + .going-label {
   color: var(--accent);
   font-weight: 600;
-}
-
-.cell-who {
-  font-size: 0.8rem;
-}
-
-.cell-who .muted {
-  color: var(--text-muted);
-}
-
-.cell-action {
-  width: 2.5rem;
-  text-align: right;
 }
 
 .board-attendance {
@@ -783,19 +836,21 @@ h1 {
 .modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.2s, visibility 0.2s;
 }
 
 .modal.open {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .modal-backdrop {
@@ -807,6 +862,7 @@ h1 {
 
 .modal-dialog {
   position: relative;
+  z-index: 1001;
   width: 100%;
   max-width: 440px;
   max-height: 90vh;

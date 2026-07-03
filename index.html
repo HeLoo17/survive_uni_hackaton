@@ -42,27 +42,13 @@
         <div class="board-header">
           <span class="board-icon">📚</span>
           <div>
-            <h2>Semester classes</h2>
-            <p class="panel-hint">Check "Going" before class so your squad knows you're attending.</p>
+            <h2>Weekly timetable</h2>
+            <p class="panel-hint">Monday to Sunday — check "Going" so your squad knows you're attending.</p>
           </div>
         </div>
 
-        <div class="table-wrap">
-          <table class="class-table" id="class-table">
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Course</th>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th>Going?</th>
-                <th>Who's going</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="class-table-body"></tbody>
-          </table>
+        <div class="week-wrap">
+          <div class="week-grid" id="week-grid"></div>
           <p id="class-empty" class="empty-state">No classes yet — tap + below to add one for the semester.</p>
         </div>
 
