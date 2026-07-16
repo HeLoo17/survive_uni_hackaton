@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab Topology · Force Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;650&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="lab-topology.css" />
+  </head>
+  <body>
+    <div id="app">
+      <svg id="graph" aria-label="Lab force-directed topology graph"></svg>
+
+      <header class="topbar">
+        <div class="brand">
+          <h1>Cyber Lab Topology</h1>
+          <p>Presence-driven force graph · ntopng + Proxmox</p>
+        </div>
+        <div class="status-cluster">
+          <span id="modePill" class="pill demo"><span class="dot"></span><span id="modeText">Demo</span></span>
+          <span class="pill"><span id="hostCount">0</span> hosts</span>
+          <span class="pill"><span id="linkCount">0</span> links</span>
+          <span class="pill" id="lastPoll">Never polled</span>
+        </div>
+      </header>
+
+      <aside class="panel legend" aria-label="Legend">
+        <h2>VLANs</h2>
+        <ul id="vlanLegend" class="legend-list"></ul>
+        <div class="presence-key">
+          <span class="traffic">Traffic (ntopng hosts/flows)</span>
+          <span class="probed">Probed (Active Monitoring)</span>
+          <span class="discovered">Discovered (ARP/scan)</span>
+          <span class="running">Running (Proxmox)</span>
+          <span class="planned">Planned catalog only</span>
+        </div>
+      </aside>
+
+      <aside class="panel drawer" aria-label="Controls">
+        <div class="drawer-tabs">
+          <button type="button" class="active" data-tab="settings">Settings</button>
+          <button type="button" data-tab="details">Details</button>
+        </div>
+        <div class="drawer-body">
+          <section class="drawer-section" id="tab-settings">
+            <h2>ntopng</h2>
+            <label class="field"
+              >Base URL
+              <input id="ntopBaseUrl" type="url" placeholder="http://192.168.90.x:3000" autocomplete="off" />
+            </label>
+            <label class="field"
+              >API token
+              <input id="ntopToken" type="password" placeholder="Authorization Token …" autocomplete="off" />
+            </label>
+            <label class="field"
+              >Interface ifid
+              <input id="ntopIfid" type="number" min="0" step="1" value="0" />
+            </label>
+
+            <h2>Proxmox</h2>
+            <label class="field"
+              >Base URL
+              <input id="pveBaseUrl" type="url" placeholder="https://192.168.90.2:8006" autocomplete="off" />
+            </label>
+            <label class="field"
+              >API token (USER@REALM!ID=SECRET)
+              <input id="pveToken" type="password" placeholder="root@pam!graph=…" autocomplete="off" />
+            </label>
+
+            <h2>Polling</h2>
+            <label class="field"
+              >Interval (seconds)
+              <input id="pollInterval" type="number" min="5" step="1" value="10" />
+            </label>
+            <label class="field"
+              >Grace timeout (seconds)
+              <input id="graceTimeout" type="number" min="5" step="1" value="30" />
+            </label>
+
+            <div class="checks">
+              <label><input id="useNtopng" type="checkbox" checked /> Use ntopng</label>
+              <label><input id="useDiscovery" type="checkbox" checked /> Include network discovery</label>
+              <label><input id="useProxmox" type="checkbox" checked /> Use Proxmox running guests</label>
+              <label><input id="includeSilentRunning" type="checkbox" checked /> Show silent running VMs</label>
+              <label><input id="showPlanned" type="checkbox" /> Show planned topology</label>
+              <label><input id="forceDemo" type="checkbox" /> Force demo snapshot</label>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="btn primary" id="saveSettings">Save &amp; poll</button>
+              <button type="button" class="btn" id="pollNow">Poll now</button>
+              <button type="button" class="btn" id="pauseToggle">Pause</button>
+            </div>
+          </section>
+
+          <section class="drawer-section" id="tab-details" hidden>
+            <div id="detailPanel" class="detail-empty">
+              Click a node to inspect IPs, VLAN, throughput, and which presence sources mark it live.
+            </div>
+            <div class="unmapped">
+              <h4>Unmapped live hosts</h4>
+              <ul id="unmappedList">
+                <li>None yet</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <div class="hint">Drag nodes · scroll to zoom · presence drops when all sources go quiet</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script src="lab-topology-data.js"></script>
+    <script src="lab-topology.js"></script>
+  </body>
+</html>
